@@ -92,6 +92,13 @@ class Reporter(ReporterBase):
 
     def prepare_results(self, results):
         # Transform results data into a format suitable for the template
+        # TODO: how to control the order of entries?
+        # TODO: add additional text for categories and subcategories
+        # TODO: incorporate results (e.g. images) in additional text
+        # TODO: how to handle tables?
+        # TODO: how to handle variables? e.g. Software versions, number of de genes, ... (yaml output?)
+
+
         transformed_results = {}
         for category, subcategories in results.items():
             transformed_results[category.name] = {

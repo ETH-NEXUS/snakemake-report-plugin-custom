@@ -23,7 +23,8 @@ poetry self add poetry-snakemake-plugin
 ```
 Next the plugin is initialized
 ```bash
-# Create a new poetry project via
+# Create a new poetry project with poetry new snakemake-report-plugin-<reporter-name>
+# e.g. if the reporter is called "custom", like in this example here, the command would be
 poetry new snakemake-report-plugin-custom
 cd snakemake-report-plugin-custom
 # Scaffold the project as a snakemake report plugin
@@ -43,7 +44,7 @@ poetry lock
 poetry install
 ```
 
-## create the report
+## Create the report
 To test the feature, you can use the basic_snakemake_workflow
 ```bash
 # clone the example workflow
@@ -55,3 +56,19 @@ poetry run snakemake -s ../basic_snakemake_workflow/Snakefile
 # create the report
 poetry run snakemake -s ../basic_snakemake_workflow/Snakefile --reporter custom --report-custom-path simple_report.html
 ```
+
+## TODO:
+* test installation without poetry (github, PyPI)
+* add functionality to make it useful:
+    * add additional text for categories and subcategories
+        * additional report/{category_name}.rst files are included if present. 
+    * how to control the order of result entries?
+        * category prefix (e.g. "01_categoryname")
+    * how to incorporate results (e.g. images) in additional text
+    * how to handle/render tables (.csv files)?
+        * specify number of columns to print?
+    * how to handle variables? e.g. Software versions, number of de genes
+        * parse yaml output
+* make it nice
+    * add logo
+    * add menu / structure?
