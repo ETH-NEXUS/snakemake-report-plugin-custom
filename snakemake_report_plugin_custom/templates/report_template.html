@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Simple Report</title>
+    <style>
+        body { font-family: Arial, sans-serif; }
+        h1 { color: #333; }
+        h2 { color: #555; }
+        ul { list-style-type: none; padding: 0; }
+        li { margin-bottom: 10px; }
+    </style>
+</head>
+<body>
+    <h1>Simple Report</h1>
+    <p>Report generated on: {{ now }}</p>
+    <p>Workflow Description: {{ workflow_description }}</p>
+    {% for category, subcategories in results.items() %}
+        <h2>{{ category }}</h2>
+        <ul>
+            {% for subcategory, files in subcategories.items() %}
+                <li><strong>{{ subcategory }}</strong>
+                    <ul>
+                        {% for file in files %}
+                            <li><a href="{{ file }}">{{ file }}</a></li>
+                        {% endfor %}
+                    </ul>
+                </li>
+            {% endfor %}
+        </ul>
+    {% endfor %}
+</body>
+</html>
