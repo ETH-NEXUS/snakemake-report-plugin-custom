@@ -47,7 +47,7 @@ poetry install
 To test the feature, you can use the basic_snakemake_workflow
 ```bash
 # clone the example workflow
-git clone git@github.com:ETH-NEXUS/basic_snakemake_workflow.git ../
+git clone git@github.com:ETH-NEXUS/basic_snakemake_workflow.git ../basic_snakemake_workflow
 # copy the config (and potentially adjust it)
 cp -r ../basic_snakemake_workflow/config .
 # run snakemake to create results
