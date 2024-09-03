@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Simple Report</title>
+    <style>
+        body { font-family: Arial, sans-serif; }
+        h1 { color: #333; }
+        h2 { color: #555; }
+        ul { list-style-type: none; padding: 0; }
+        li { margin-bottom: 10px; }
+    </style>
+</head>
+<body>
+    <h1>Simple Report</h1>
+    <p>Report generated on: 2024-09-03 10:19:28</p>
+    <p>Workflow Description: <p>This Snakemake workflow demonstrates a basic data analysis pipeline for generating random datasets,
+plotting individual samples, and aggregating the data to create a summary table and plot.
+The pipeline is designed to test Snakemake's reporting functionality and showcases the use of the <cite>report()</cite>
+directive to include results in a final HTML report.</p>
+<div class="section" id="workflow-steps">
+<h1>Workflow Steps</h1>
+<ol class="arabic simple">
+<li><strong>Data Generation</strong>:
+For each of the three samples, random data is generated using a normal distribution.
+The size of the data points is defined by the parameter <cite>n = 100</cite>.
+The generated data is saved as CSV files.</li>
+<li><strong>Data Visualization</strong>:
+Each sample's data is visualized in a plot.
+The plots show the relationship between the x-values (which are sequential integers) and the y-values
+(randomly generated following a normal distribution).
+These plots are included in the report under the category &quot;Data Visualization&quot;.</li>
+<li><strong>Data Aggregation</strong>:
+All generated data files are aggregated into a single summary file.
+The summary contains the mean values of the data points across all samples.
+A corresponding plot visualizes the aggregated results. Both the summary file
+and the plot are included in the report under the category &quot;Aggregation&quot;.</li>
+</ol>
+</div>
+<div class="section" id="configuration">
+<h1>Configuration</h1>
+<p>The workflow is configured to process the following samples:</p>
+<ul class="simple">
+<li>['sample1', 'sample2', 'sample3']</li>
+</ul>
+<p>Additional settings and parameters, such as the number of data points <cite>n</cite> and output file locations,
+can be adjusted in the <cite>config.yaml</cite>.</p>
+</div>
+<div class="section" id="results">
+<h1>Results</h1>
+<p>The workflow generates an HTML report that includes:</p>
+<ul class="simple">
+<li>Plots of individual sample data.</li>
+<li>A summary table of aggregated data.</li>
+<li>A summary plot.</li>
+</ul>
+<p>The report provides an overview of each step and the corresponding results,
+including captions and contextual information about the data and plots.</p>
+</div>
+</p>
+    
+        <h2>Data Visualization</h2>
+        <ul>
+            
+                <li><strong>Other</strong>
+                    <ul>
+                        
+                            <li><a href="results/plots/sample1.png">results/plots/sample1.png</a></li>
+                        
+                            <li><a href="results/plots/sample2.png">results/plots/sample2.png</a></li>
+                        
+                            <li><a href="results/plots/sample3.png">results/plots/sample3.png</a></li>
+                        
+                    </ul>
+                </li>
+            
+        </ul>
+    
+        <h2>Data Generation</h2>
+        <ul>
+            
+                <li><strong>Other</strong>
+                    <ul>
+                        
+                            <li><a href="results/data/sample1.csv">results/data/sample1.csv</a></li>
+                        
+                            <li><a href="results/data/sample2.csv">results/data/sample2.csv</a></li>
+                        
+                            <li><a href="results/data/sample3.csv">results/data/sample3.csv</a></li>
+                        
+                    </ul>
+                </li>
+            
+        </ul>
+    
+        <h2>Aggregation</h2>
+        <ul>
+            
+                <li><strong>Other</strong>
+                    <ul>
+                        
+                            <li><a href="results/summary.csv">results/summary.csv</a></li>
+                        
+                            <li><a href="results/summary.png">results/summary.png</a></li>
+                        
+                    </ul>
+                </li>
+            
+        </ul>
+    
+</body>
+</html>
