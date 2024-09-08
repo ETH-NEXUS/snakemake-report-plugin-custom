@@ -12,7 +12,7 @@ https://github.com/snakemake/poetry-snakemake-plugin
 This example modifies this skeleton to create a minimal html report. 
 
 ## Setup
-To set up the dev env, we need to install poetry and the snakemake plugin
+To set up the dev env, we need to install poetry and the SnakeMake plugin
 ```bash
 # set up poetry
 curl -sSL https://install.python-poetry.org | python -
@@ -33,8 +33,8 @@ poetry scaffold-snakemake-report-plugin
 ## Development
 Next, edit the scaffolded code according to your needs
 In particular, the ReportSettings and Reporter classes in `__init__.py` need to be implemented.
-Then publish the resulting plugin into a github repository. The scaffold command also 
-creates github actions workflows that will immediately start to check and test
+Then publish the resulting plugin into a GitHub repository. The scaffold command also 
+creates GitHub actions workflows that will immediately start to check and test
 the plugin.
 
 During development, you can add new dependencies with
@@ -43,6 +43,9 @@ During development, you can add new dependencies with
 poetry lock
 poetry install
 ```
+### Interactive development
+
+
 
 ## Create the report
 To test the feature, you can use the basic_snakemake_workflow
@@ -57,8 +60,11 @@ poetry run snakemake -s ../basic_snakemake_workflow/Snakefile
 poetry run snakemake -s ../basic_snakemake_workflow/Snakefile --reporter custom --report-custom-path simple_report.html
 ```
 
+
 ## TODO:
 * test installation without poetry (github, PyPI)
+* poetry deployment?
+* satisfy github action tests
 * add functionality to make it useful:
     * add additional text for categories and subcategories
         * additional report/{category_name}.rst files are included if present. 
@@ -72,3 +78,5 @@ poetry run snakemake -s ../basic_snakemake_workflow/Snakefile --reporter custom 
 * make it nice
     * add logo
     * add menu / structure?
+* return two htmls, one centered around technicalities, one around results
+

@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Benchmark Report</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        .report-container {
+            max-width: 800px;
+            margin: auto;
+        }
+        .benchmark-item {
+            margin-bottom: 30px;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 20px;
+        }
+        .benchmark-item img {
+            max-width: 100%;
+            height: auto;
+        }
+        .caption {
+            font-style: italic;
+            color: #666;
+            margin-top: 10px;
+        }
+        .timestamp {
+            margin-top: 20px;
+            font-size: 0.9em;
+            color: #888;
+            text-align: right;
+        }
+    </style>
+</head>
+<body>
+    <div class="report-container">
+        <h1>Benchmark Report</h1>
+        {% for benchmark in results %}
+        <div class="benchmark-item">
+            <h2>{{ benchmark.rule_name }}</h2>
+            <img src="{{ benchmark.image_path }}" alt="Benchmark for {{ benchmark.rule_name }}">
+            <div class="caption">{{ benchmark.caption }}</div>
+        </div>
+        {% endfor %}
+        <div class="timestamp">Generated on: {{ now }}</div>
+    </div>
+</body>
+</html>
