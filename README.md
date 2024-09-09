@@ -82,8 +82,10 @@ git clone git@github.com:ETH-NEXUS/basic_snakemake_workflow.git ../basic_snakema
 cp -r ../basic_snakemake_workflow/config .
 # run snakemake to create results
 poetry run snakemake -s ../basic_snakemake_workflow/Snakefile
-# create the report
-poetry run snakemake -s ../basic_snakemake_workflow/Snakefile --reporter custom --report-custom-path simple_report.html
+
+# delete old reports and create the report
+rm -r results_report resource_report && poetry run snakemake -s ../basic_snakemake_workflow/Snakefile --reporter custom --report-custom-resources resource_report --report-custom-results results_report
+
 ```
 
 
