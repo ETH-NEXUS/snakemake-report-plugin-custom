@@ -43,7 +43,18 @@ During development, you can add new dependencies with
 poetry lock
 poetry install
 ```
-### Interactive development
+Run the checks done in github actions
+```bash
+# formatting
+poetry run black .
+poetry run black --check .
+# linting
+poetry run flake8
+# tests are not set up right now ...
+poetry run coverage run -m pytest tests/tests.py
+poetry run coverage report -m
+
+```
 
 
 
