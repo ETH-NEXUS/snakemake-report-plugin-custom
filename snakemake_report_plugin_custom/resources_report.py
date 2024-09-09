@@ -58,9 +58,9 @@ def create_benchmark_plot(rule_name, benchmark_file, input_names, out_path):
             "time": stats["s"][0],
             "input_size": input_size,
         }
-    if not resources:
-        logger.error(f"No benchmark files found for {benchmark_file}")
-        return
+    if not resources:        
+        raise ValueError("No matching benchmark files found for "
+                         f"{rule_name}:\n{benchmark_file}")
     infos = {"n jobs": len(resources)}
     df = pd.DataFrame.from_dict(resources, orient="index")
     logger.debug(df)

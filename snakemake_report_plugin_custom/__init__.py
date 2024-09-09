@@ -167,11 +167,14 @@ class Reporter(ReporterBase):
             logger.info(f"Rule input files: {rule.input}")
             logger.info(f"Rule benchmark files: {rule.benchmark}")
             if rule.benchmark is not None:
-
                 rule_benchmark = {"rule_name": rule.name}
-                file, infos = create_benchmark_plot(
-                    rule.name, rule.benchmark, rule.input, output_dir
-                )
+                try:
+                    file, infos = create_benchmark_plot(
+                        rule.name, rule.benchmark, rule.input, output_dir
+                    )
+                except ValueError as e:
+                    logger.error(e.message)
+                    continue
                 rule_benchmark["image_path"] = file
                 rule_benchmark["caption"] = "\n".join(
                     [f"* {k}: {v}" for k, v in infos.items()]
