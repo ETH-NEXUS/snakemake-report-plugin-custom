@@ -37,12 +37,16 @@ Then publish the resulting plugin into a GitHub repository. The scaffold command
 creates GitHub actions workflows that will immediately start to check and test
 the plugin.
 
+### Poetry commands
 During development, you can add new dependencies with
 ```bash
+poetry self show
 # edit the pyproject.toml file
 poetry lock
 poetry install
 ```
+
+### Code checks
 Run the checks done in github actions
 ```bash
 # formatting
@@ -53,8 +57,19 @@ poetry run flake8
 # tests are not set up right now ...
 poetry run coverage run -m pytest tests/tests.py
 poetry run coverage report -m
-
 ```
+### release please
+Releases are automated with release please, which gets triggered with specially formated commit messages.
+For all features, see the githhub readme: https://github.com/googleapis/release-please
+
+git commit messages should follow the scheme that can be parsed by release-please, e.g.:
+```
+feat: add initial plugin
+fix: correct git command
+chore: add gitignore and resulting simple_report.html
+refactor: update resources_report
+```
+
 
 
 
