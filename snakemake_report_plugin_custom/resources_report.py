@@ -4,6 +4,10 @@ from glob import glob
 from os import path
 import re
 import matplotlib
+from snakemake.io import (regex_from_filepattern,
+                          apply_wildcards,
+                          # glob_wildcards,
+                          )
 
 matplotlib.use("Agg")  # Use Agg backend for rendering plots
 try:
@@ -12,43 +16,32 @@ except ImportError:
     from snakemake import logger
 
 
-def substitute_wildcards(filename, wildcards):
-    # Find all wildcards in the pattern using regex
-    found_wildcards = re.findall(r"{(\w+)}", filename)
-    # Filter the wildcards to those present in the pattern
-    substitutions = {k: v for k, v in wildcards.items() if k in found_wildcards}
-    # Perform the substitution
-    return filename.format(**substitutions)
-
-
-# todo: this would be cool in a custom report
-
-
 def create_benchmark_plot(rule_name, benchmark_file, input_names, out_path):
     # rule = "celltype_gsva"
     # wdir = "/cluster/work/drscs/scRNA/08_metacells/02_melanoma"
     resources = {}
-    benchmark_pattern = re.sub(r"{(\w+)}", r"(?P<\1>[^/]+)", benchmark_file)
-    benchmark_re = re.compile(benchmark_pattern)
-    benchmark_glob = re.sub(r"{\w+}", "*", benchmark_file)
+    benchmark_regex = re.compile(regex_from_filepattern(benchmark_file))
     # glob benchmark files
+    # wildcards=glob_wildcards(benchmark_file) # not that useful
+    benchmark_glob = re.sub(r"{.*?}", "*", benchmark_file)
     for bm_file in glob(benchmark_glob):
         # find wildcard values
-        match = benchmark_re.match(bm_file)
+        logger.debug(bm_file)
+        match = benchmark_regex.match(bm_file)
         wildcards = match.groupdict()
         wildcard_string = "; ".join(f"{k}={v}" for k, v in wildcards.items())
         fn = path.basename(bm_file)
-        logger.debug(f"{fn}\n Wildcards: {wildcards}")
+        logger.debug(f"{fn}\n Wildcards: {wildcard_string}")
         # check for corresponding input files
         input_files = [
-            substitute_wildcards(in_file, wildcards) for in_file in input_names
+            apply_wildcards(in_file, wildcards) for in_file in input_names
         ]
         try:
             input_size = sum(path.getsize(in_file) for in_file in input_files)
         except FileExistsError as e:
             logger.error(
                 "Cannot find input filed for wildcard "
-                f"{wildcard_string}\n{e.message}"
+                f"{wildcard_string}\n{e}"
             )
             input_size = 0
         # read snakemake benchmark file
@@ -58,7 +51,7 @@ def create_benchmark_plot(rule_name, benchmark_file, input_names, out_path):
             "time": stats["s"][0],
             "input_size": input_size,
         }
-    if not resources:        
+    if not resources:
         raise ValueError("No matching benchmark files found for "
                          f"{rule_name}:\n{benchmark_file}")
     infos = {"n jobs": len(resources)}
