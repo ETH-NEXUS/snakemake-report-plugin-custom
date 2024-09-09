@@ -173,7 +173,7 @@ class Reporter(ReporterBase):
                         rule.name, rule.benchmark, rule.input, output_dir
                     )
                 except ValueError as e:
-                    logger.error(e.message)
+                    logger.error(e)
                     continue
                 rule_benchmark["image_path"] = file
                 rule_benchmark["caption"] = "\n".join(
