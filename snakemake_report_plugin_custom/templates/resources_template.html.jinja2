@@ -41,7 +41,7 @@
         {% for benchmark in results %}
         <div class="benchmark-item">
             <h2>{{ benchmark.rule_name }}</h2>
-            <img src="{{ benchmark.image_path }}" alt="Benchmark for {{ benchmark.rule_name }}">
+            <img src="{{ benchmark.image }}" alt="Benchmark for {{ benchmark.rule_name }}">
             <div class="caption">{{ benchmark.caption }}</div>
         </div>
         {% endfor %}
