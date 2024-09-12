@@ -10,6 +10,7 @@ matplotlib.use("Agg")  # Use Agg backend for rendering plots
 
 from snakemake.io import (regex_from_filepattern,
                           apply_wildcards,
+                          Namedlist
                           # glob_wildcards,
                           )
 from jinja2 import Environment, FileSystemLoader
@@ -29,7 +30,7 @@ def render_resource_html(workflow, output_dir, html_filename, template_dir, temp
                 exit(1)
         benchmark_results = []
         for rule in workflow.rules:
-
+            
             logger.info(rule)
             logger.info(f"Rule name: {rule.name}")
             logger.info(f"Rule input files: {rule.input}")
@@ -96,7 +97,7 @@ def create_benchmark_plot(rule_name, benchmark_file, input_names):
         logger.debug(f"{fn}\n Wildcards: {wildcard_string}")
         # check for corresponding input files
         input_files = [
-            apply_wildcards(in_file, wildcards) for in_file in input_names
+            in_file(Namedlist(fromdict=wildcards)) if callable(in_file) else apply_wildcards(in_file, wildcards) for in_file in input_names 
         ]
         try:
             input_size = sum(path.getsize(in_file) for in_file in input_files)
