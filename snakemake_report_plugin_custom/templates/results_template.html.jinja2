@@ -16,13 +16,13 @@
     <p>Report generated on: {{ now }}</p>
     <p>Workflow Description: {{ workflow_description }}</p>
     {% for category, subcategories in results.items() %}
-        <h2>{{ category }}</h2>
+        <h2>{{ category.name }}</h2>
         <ul>
             {% for subcategory, files in subcategories.items() %}
-                <li><strong>{{ subcategory }}</strong>
+                <li><h3>{{ subcategory.name }}</h3>
                     <ul>
                         {% for file in files %}
-                            <li><a href="{{ file }}">{{ file }}</a></li>
+                            {{file.rendered|safe}}
                         {% endfor %}
                     </ul>
                 </li>

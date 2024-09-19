@@ -13,7 +13,7 @@
 </head>
 <body>
     <h1>Simple Report</h1>
-    <p>Report generated on: 2024-09-09 10:50:36</p>
+    <p>Report generated on: 2024-09-19 19:58:12</p>
     <p>Workflow Description: <p>This Snakemake workflow demonstrates a basic data analysis pipeline for generating random datasets,
 plotting individual samples, and aggregating the data to create a summary table and plot.
 The pipeline is designed to test Snakemake's reporting functionality and showcases the use of the <cite>report()</cite>
@@ -39,11 +39,13 @@ and the plot are included in the report under the category &quot;Aggregation&quo
 </div>
 <div class="section" id="configuration">
 <h1>Configuration</h1>
-<p>The workflow is configured to process the following samples:</p>
+<p>The workflow is configured to generate 100 datapoints for the following samples:</p>
 <ul class="simple">
-<li>['sample1', 'sample2', 'sample3']</li>
+<li>sample1</li>
+<li>sample2</li>
+<li>sample3</li>
 </ul>
-<p>Additional settings and parameters, such as the number of data points <cite>n</cite> and output file locations,
+<p>Additional settings and parameters for the report
 can be adjusted in the <cite>config.yaml</cite>.</p>
 </div>
 <div class="section" id="results">
@@ -59,49 +61,209 @@ including captions and contextual information about the data and plots.</p>
 </div>
 </p>
     
-        <h2>Data Visualization</h2>
+        <h2>1) Data Generation</h2>
         <ul>
             
-                <li><strong>Other</strong>
+                <li><h3>Other</h3>
                     <ul>
                         
-                            <li><a href="results/plots/sample1.png">results/plots/sample1.png</a></li>
+                            <table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>x</th>
+      <th>y</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>1</td>
+      <td>1.862775</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>2</td>
+      <td>-2.844787</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>3</td>
+      <td>-1.032519</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>4</td>
+      <td>-0.516596</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>5</td>
+      <td>0.076832</td>
+    </tr>
+  </tbody>
+</table>
+<li><a href="results/data/sample1.csv">results/data/sample1.csv</a></li>
+<p>This is the lineplot for sample sample1</p>
+
                         
-                            <li><a href="results/plots/sample2.png">results/plots/sample2.png</a></li>
+                            <table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>x</th>
+      <th>y</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>1</td>
+      <td>1.373592</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>2</td>
+      <td>0.133430</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>3</td>
+      <td>-0.037160</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>4</td>
+      <td>-0.680556</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>5</td>
+      <td>0.599052</td>
+    </tr>
+  </tbody>
+</table>
+<li><a href="results/data/sample2.csv">results/data/sample2.csv</a></li>
+<p>This is the lineplot for sample sample2</p>
+
                         
-                            <li><a href="results/plots/sample3.png">results/plots/sample3.png</a></li>
+                            <table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>x</th>
+      <th>y</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>1</td>
+      <td>-0.941589</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>2</td>
+      <td>-0.523472</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>3</td>
+      <td>-1.463578</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>4</td>
+      <td>-2.105503</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>5</td>
+      <td>0.506165</td>
+    </tr>
+  </tbody>
+</table>
+<li><a href="results/data/sample3.csv">results/data/sample3.csv</a></li>
+<p>This is the lineplot for sample sample3</p>
+
                         
                     </ul>
                 </li>
             
         </ul>
     
-        <h2>Data Generation</h2>
+        <h2>2) Data Visualization</h2>
         <ul>
             
-                <li><strong>Other</strong>
+                <li><h3>Other</h3>
                     <ul>
                         
-                            <li><a href="results/data/sample1.csv">results/data/sample1.csv</a></li>
+                            <img src="results/plots/sample1.png" alt="FileRecord(path=PosixPath('results/plots/sample1.png'), job=plot_data, category=Category(name='2) Data Visualization', is_other=False, id='13981ae944089d54bd8dd3977bfb7bf06ddcb165776bb9af3045814f618a6108'), wildcards_overwrite=None, labels=None, raw_caption=<snakemake.sourcecache.LocalSourceFile object at 0x127f60e90>, aux_files=[], name_overwrite=None, size=45662, params='', wildcards='sample=sample1', mime='image/png', caption='<p>These are the first random numbers for sample1</p>\n', id='24313a970d0313588f96a9441882390377411f350a74a2efa9ff6aeb21be3902', target='sample1.png')">
+<p>These are the first random numbers for sample1</p>
+
                         
-                            <li><a href="results/data/sample2.csv">results/data/sample2.csv</a></li>
+                            <img src="results/plots/sample2.png" alt="FileRecord(path=PosixPath('results/plots/sample2.png'), job=plot_data, category=Category(name='2) Data Visualization', is_other=False, id='13981ae944089d54bd8dd3977bfb7bf06ddcb165776bb9af3045814f618a6108'), wildcards_overwrite=None, labels=None, raw_caption=<snakemake.sourcecache.LocalSourceFile object at 0x127f60e90>, aux_files=[], name_overwrite=None, size=46138, params='', wildcards='sample=sample2', mime='image/png', caption='<p>These are the first random numbers for sample2</p>\n', id='0174c7ee292d0d1d764519370593983923d5877d9371c9e1ad0ab0e85a4b87aa', target='sample2.png')">
+<p>These are the first random numbers for sample2</p>
+
                         
-                            <li><a href="results/data/sample3.csv">results/data/sample3.csv</a></li>
+                            <img src="results/plots/sample3.png" alt="FileRecord(path=PosixPath('results/plots/sample3.png'), job=plot_data, category=Category(name='2) Data Visualization', is_other=False, id='13981ae944089d54bd8dd3977bfb7bf06ddcb165776bb9af3045814f618a6108'), wildcards_overwrite=None, labels=None, raw_caption=<snakemake.sourcecache.LocalSourceFile object at 0x127f60e90>, aux_files=[], name_overwrite=None, size=47441, params='', wildcards='sample=sample3', mime='image/png', caption='<p>These are the first random numbers for sample3</p>\n', id='02e3899f18ea15d17d13073344114f5144a3fc125e9f7fdadeac9a83dae8b23e', target='sample3.png')">
+<p>These are the first random numbers for sample3</p>
+
                         
                     </ul>
                 </li>
             
         </ul>
     
-        <h2>Aggregation</h2>
+        <h2>3) Aggregation</h2>
         <ul>
             
-                <li><strong>Other</strong>
+                <li><h3>Other</h3>
                     <ul>
                         
-                            <li><a href="results/summary.csv">results/summary.csv</a></li>
+                            <table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>x</th>
+      <th>y</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>1</td>
+      <td>0.764926</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>2</td>
+      <td>-1.078277</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>3</td>
+      <td>-0.844419</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>4</td>
+      <td>-1.100885</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>5</td>
+      <td>0.394016</td>
+    </tr>
+  </tbody>
+</table>
+<li><a href="results/summary.csv">results/summary.csv</a></li>
+<p>These are the first random numbers for aggregated samples</p>
+
                         
-                            <li><a href="results/summary.png">results/summary.png</a></li>
+                            <img src="results/summary.png" alt="FileRecord(path=PosixPath('results/summary.png'), job=aggregate_data, category=Category(name='3) Aggregation', is_other=False, id='59a20da430de0c467e42b6837a087037e7019ccccdadd8bd11c5e73f6b2b9098'), wildcards_overwrite=None, labels=None, raw_caption=<snakemake.sourcecache.LocalSourceFile object at 0x127f61af0>, aux_files=[], name_overwrite=None, size=48109, params='', wildcards='', mime='image/png', caption='<p>This is the lineplot for sample aggregated samples</p>\n', id='c3f0b68cac4b86e3f9c312f68240512e6346e62e5fc5421fe45db53afa27c754', target='summary.png')">
+<p>This is the lineplot for sample aggregated samples</p>
+
                         
                     </ul>
                 </li>

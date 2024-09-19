@@ -84,7 +84,8 @@ cp -r ../basic_snakemake_workflow/config .
 poetry run snakemake -s ../basic_snakemake_workflow/Snakefile
 
 # delete old reports and create the report
-rm -r results_report resource_report && poetry run snakemake -s ../basic_snakemake_workflow/Snakefile --reporter custom --report-custom-resources resource_report --report-custom-results results_report
+rm -r results_report resource_report && poetry run snakemake -s ../basic_snakemake_workflow/Snakefile --reporter custom --report-custom-resources resource_report.html --report-custom-results results_report
+
 
 ```
 

@@ -1,6 +1,8 @@
 from dataclasses import dataclass, field
 from typing import Optional
 from os import path
+import yaml
+
 
 
 try:
@@ -95,5 +97,10 @@ class Reporter(ReporterBase):
     def render_results_report(self):
         # Ensure the output directory does not exist
         output_dir = self.settings.results
-        render_results_html(self.results,self.workflow_description, output_dir, self.template_dir, self.results_template_file, embedded=False)
+        
+        # logger.debug("**** config ****\n"+self.configfiles[0].source)
+        # Convert JSON string to dictionary
+        config_dict=yaml.safe_load(self.configfiles[0].source)
+
+        render_results_html(self.results,self.workflow_description,config_dict, output_dir, self.template_dir, self.results_template_file, embedded=False)
         logger.info(f"Result Report generated at {output_dir}")
