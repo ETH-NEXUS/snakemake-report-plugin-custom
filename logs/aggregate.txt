@@ -1,1 +1,1 @@
-2024-09-19 16:40:05,173 - INFO - aggregate data: input_files=['results/data/sample1.csv', 'results/data/sample2.csv', 'results/data/sample3.csv']
+2024-10-21 11:33:37,554 - INFO - aggregate data: input_files=['results/data/sample1.csv', 'results/data/sample2.csv', 'results/data/sample3.csv']

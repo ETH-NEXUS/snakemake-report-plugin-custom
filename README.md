@@ -82,10 +82,11 @@ git clone git@github.com:ETH-NEXUS/basic_snakemake_workflow.git ../basic_snakema
 cp -r ../basic_snakemake_workflow/config .
 # run snakemake to create results
 poetry run snakemake -s ../basic_snakemake_workflow/Snakefile
+# default html report
+poetry run snakemake -s ../basic_snakemake_workflow/Snakefile --report html_report.html 
 
 # delete old reports and create the report
-rm -r results_report resource_report && poetry run snakemake -s ../basic_snakemake_workflow/Snakefile --reporter custom --report-custom-resources resource_report.html --report-custom-results results_report
-
+rm -r results_report  && poetry run snakemake -s ../basic_snakemake_workflow/Snakefile --reporter custom --report-custom-config report_config.yaml
 
 ```
 
@@ -98,14 +99,69 @@ rm -r results_report resource_report && poetry run snakemake -s ../basic_snakema
     * add additional text for categories and subcategories
         * additional report/{category_name}.rst files are included if present. 
     * how to control the order of result entries?
-        * category prefix (e.g. "01_categoryname")
+        * sort alphabetically: add category prefix (e.g. "01_categoryname") (done)
+        * define in report_config.yaml (todo)
     * how to incorporate results (e.g. images) in additional text
+        * yaml templates (md or rst) overwrite default (heading + result + caption)
     * how to handle/render tables (.csv files)?
-        * specify number of columns to print?
+        * specify number of columns to print (default or section specific)
+        * in template?
     * how to handle variables? e.g. Software versions, number of de genes
-        * parse yaml output
+        * parse yaml output of rules?
 * make it nice
     * add logo
     * add menu / structure?
+    * handle "other" e.g. no category/subcategory 
+      * no heading
+      * comes first 
 * return two htmls, one centered around technicalities, one around results
 
+## Notes:
+
+captions get rendered with:
+* snakemake.scripts.Snakemake()
+    * input, output, params, wildcards, threads, resources, log, config, rulename, bench_iteration
+* categories
+* files
+
+
+reports.yaml file
+```yaml
+structure:
+  intro:
+    content: "report/workflow.md"
+    vars: results/report_vars.yaml
+  category1:
+    content: "report/category1.md"
+    subcat: 
+        subcat1.1:
+          content: "report/subcat1.1.md"
+        subcat1.2:
+          content: "report/subcat1.2.md"
+        other: 
+          show: False
+    other: 
+      show: True
+  category2:
+    show: False
+
+
+```
+category.md templates
+
+```md
+## {{name}}
+this is text preceding the output which has access to {{vars.ruleX.python_version}}
+{{output.render_all()}}
+{{output.render_first()}}
+{{output.render_wildcard("sample_1")}}
+### Conculsions
+This is text after the 
+
+```
+
+default template
+```md
+## {{name}}
+{{output.render_all()}}
+```

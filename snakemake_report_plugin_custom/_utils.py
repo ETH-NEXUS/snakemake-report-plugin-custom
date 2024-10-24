@@ -14,10 +14,10 @@ def print_content(**kwargs):
     """
     This function prints the content of the provided arguments
     """
-    logger.info("My Fancy Report")
+    logger.info("\n- ".join(kwargs.keys()))
     if "configfiles" in kwargs:
         logger.info("\n--- CONFIGFILES ---")
-        logger.info(kwargs[configfiles])
+        logger.info(kwargs['configfiles'])
 
     if "dag" in kwargs:
         dag=kwargs["dag"]

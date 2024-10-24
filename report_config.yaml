@@ -1,0 +1,50 @@
+results:
+  title: "Report for Basic Snakemake Workflow"
+  path: results_report/
+  # create self contained file (TODO)
+  embedded: False
+  # if description template is not specified, the template from the snakefile (report directive) is used 
+  description: report_template/workflow_overview.md 
+  # here you can explicitly define the order of sections, and additional templates
+  result_sections:
+    "Data Generation": 
+      template: report_template/data_generation.md
+      images: large
+      tables: link_only
+      subsections:
+        Other:
+          template: report_template/data_generation_subsection.md
+    "Data Visualization":
+      template: report_template/data_visualization.md
+    Aggregation: 
+      # default rendering 
+      # - header, no text, all result files are concatenated
+    # Categories not listed here are added with default 
+    # rendering in alphabetical order
+    # to skip a category add:
+    # Category_name: skip
+    # "[...]": 
+    #   template: default
+    # References:
+    #  template: report_template/references
+
+  # specify default rendering options for    
+  render_options: 
+    image:
+      suffix:
+        - "jpg"
+        - "png"
+      width: 512
+      link: False
+      large:
+        width: 1024
+    table:
+      suffix:
+        - "csv"
+        - "tsv"
+      sep:
+        default: "\t"
+        csv: ","
+      max_row: 10
+      max_cols: 10
+      link: False

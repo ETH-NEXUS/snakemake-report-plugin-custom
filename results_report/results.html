@@ -1,274 +1,225 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="utf-8">
-    <title>Simple Report</title>
-    <style>
-        body { font-family: Arial, sans-serif; }
-        h1 { color: #333; }
-        h2 { color: #555; }
-        ul { list-style-type: none; padding: 0; }
-        li { margin-bottom: 10px; }
-    </style>
-</head>
-<body>
-    <h1>Simple Report</h1>
-    <p>Report generated on: 2024-09-19 19:58:12</p>
-    <p>Workflow Description: <p>This Snakemake workflow demonstrates a basic data analysis pipeline for generating random datasets,
-plotting individual samples, and aggregating the data to create a summary table and plot.
-The pipeline is designed to test Snakemake's reporting functionality and showcases the use of the <cite>report()</cite>
-directive to include results in a final HTML report.</p>
-<div class="section" id="workflow-steps">
-<h1>Workflow Steps</h1>
-<ol class="arabic simple">
-<li><strong>Data Generation</strong>:
-For each of the three samples, random data is generated using a normal distribution.
-The size of the data points is defined by the parameter <cite>n = 100</cite>.
-The generated data is saved as CSV files.</li>
-<li><strong>Data Visualization</strong>:
-Each sample's data is visualized in a plot.
-The plots show the relationship between the x-values (which are sequential integers) and the y-values
-(randomly generated following a normal distribution).
-These plots are included in the report under the category &quot;Data Visualization&quot;.</li>
-<li><strong>Data Aggregation</strong>:
-All generated data files are aggregated into a single summary file.
-The summary contains the mean values of the data points across all samples.
-A corresponding plot visualizes the aggregated results. Both the summary file
-and the plot are included in the report under the category &quot;Aggregation&quot;.</li>
+<h1>Report for Basic Snakemake Workflow</h1>
+<p>Report generated on: 2024-10-24 18:45:00</p>
+<h2>Workflow Description</h2>
+<h3>Overview</h3>
+<p>This Snakemake workflow demonstrates a basic data analysis pipeline for generating random datasets, 
+plotting individual samples, and aggregating the data to create a summary table and plot. 
+The pipeline is designed to test Snakemake's reporting functionality and showcases the use of the <code>report()</code> 
+function of output files to include results in a final HTML report.</p>
+<h3>Workflow Steps</h3>
+<ol>
+<li>
+<p><strong>Data Generation</strong>: 
+   For each of the three samples, random data is generated using a normal distribution. 
+   The size of the data points is defined by the parameter <code>n = 100</code>.
+   The generated data is saved as CSV files.</p>
+</li>
+<li>
+<p><strong>Data Visualization</strong>: 
+   Each sample's data is visualized in a plot. 
+   The plots show the relationship between the x-values (which are sequential integers) and the y-values 
+   (randomly generated following a normal distribution). 
+   These plots are included in the report under the category "Data Visualization".</p>
+</li>
+<li>
+<p><strong>Data Aggregation</strong>: 
+   All generated data files are aggregated into a single summary file. 
+   The summary contains the mean values of the data points across all samples. 
+   A corresponding plot visualizes the aggregated results. Both the summary file 
+   and the plot are included in the report under the category "Aggregation".</p>
+</li>
 </ol>
-</div>
-<div class="section" id="configuration">
-<h1>Configuration</h1>
-<p>The workflow is configured to generate 100 datapoints for the following samples:</p>
-<ul class="simple">
-<li>sample1</li>
-<li>sample2</li>
-<li>sample3</li>
-</ul>
-<p>Additional settings and parameters for the report
-can be adjusted in the <cite>config.yaml</cite>.</p>
-</div>
-<div class="section" id="results">
-<h1>Results</h1>
-<p>The workflow generates an HTML report that includes:</p>
-<ul class="simple">
-<li>Plots of individual sample data.</li>
-<li>A summary table of aggregated data.</li>
-<li>A summary plot.</li>
-</ul>
-<p>The report provides an overview of each step and the corresponding results,
-including captions and contextual information about the data and plots.</p>
-</div>
-</p>
-    
-        <h2>1) Data Generation</h2>
-        <ul>
-            
-                <li><h3>Other</h3>
-                    <ul>
-                        
-                            <table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>x</th>
-      <th>y</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>0</th>
-      <td>1</td>
-      <td>1.862775</td>
-    </tr>
-    <tr>
-      <th>1</th>
-      <td>2</td>
-      <td>-2.844787</td>
-    </tr>
-    <tr>
-      <th>2</th>
-      <td>3</td>
-      <td>-1.032519</td>
-    </tr>
-    <tr>
-      <th>3</th>
-      <td>4</td>
-      <td>-0.516596</td>
-    </tr>
-    <tr>
-      <th>4</th>
-      <td>5</td>
-      <td>0.076832</td>
-    </tr>
-  </tbody>
+<h3>Configuration</h3>
+<p>The workflow is configured to generate 100 datapoints for 3 samples.</p>
+<h2>Results</h2>
+<h2>Data Generation</h2>
+<p>This is some custom introduction text for the data generation section.</p>
+<h3>sample1.csv</h3>
+<table>
+<thead>
+<tr>
+<th style="text-align: right;"></th>
+<th style="text-align: right;">x</th>
+<th style="text-align: right;">y</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">-0.703586</td>
+</tr>
+<tr>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">-0.0975687</td>
+</tr>
+<tr>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">-0.307086</td>
+</tr>
+<tr>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">-1.63426</td>
+</tr>
+<tr>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">0.27029</td>
+</tr>
+<tr>
+<td style="text-align: right;"><a href="results/data/sample1.csv">results/data/sample1.csv</a></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+</tr>
+</tbody>
 </table>
-<li><a href="results/data/sample1.csv">results/data/sample1.csv</a></li>
-<p>This is the lineplot for sample sample1</p>
-
-                        
-                            <table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>x</th>
-      <th>y</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>0</th>
-      <td>1</td>
-      <td>1.373592</td>
-    </tr>
-    <tr>
-      <th>1</th>
-      <td>2</td>
-      <td>0.133430</td>
-    </tr>
-    <tr>
-      <th>2</th>
-      <td>3</td>
-      <td>-0.037160</td>
-    </tr>
-    <tr>
-      <th>3</th>
-      <td>4</td>
-      <td>-0.680556</td>
-    </tr>
-    <tr>
-      <th>4</th>
-      <td>5</td>
-      <td>0.599052</td>
-    </tr>
-  </tbody>
-</table>
-<li><a href="results/data/sample2.csv">results/data/sample2.csv</a></li>
-<p>This is the lineplot for sample sample2</p>
-
-                        
-                            <table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>x</th>
-      <th>y</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>0</th>
-      <td>1</td>
-      <td>-0.941589</td>
-    </tr>
-    <tr>
-      <th>1</th>
-      <td>2</td>
-      <td>-0.523472</td>
-    </tr>
-    <tr>
-      <th>2</th>
-      <td>3</td>
-      <td>-1.463578</td>
-    </tr>
-    <tr>
-      <th>3</th>
-      <td>4</td>
-      <td>-2.105503</td>
-    </tr>
-    <tr>
-      <th>4</th>
-      <td>5</td>
-      <td>0.506165</td>
-    </tr>
-  </tbody>
-</table>
-<li><a href="results/data/sample3.csv">results/data/sample3.csv</a></li>
-<p>This is the lineplot for sample sample3</p>
-
-                        
-                    </ul>
-                </li>
-            
-        </ul>
-    
-        <h2>2) Data Visualization</h2>
-        <ul>
-            
-                <li><h3>Other</h3>
-                    <ul>
-                        
-                            <img src="results/plots/sample1.png" alt="FileRecord(path=PosixPath('results/plots/sample1.png'), job=plot_data, category=Category(name='2) Data Visualization', is_other=False, id='13981ae944089d54bd8dd3977bfb7bf06ddcb165776bb9af3045814f618a6108'), wildcards_overwrite=None, labels=None, raw_caption=<snakemake.sourcecache.LocalSourceFile object at 0x127f60e90>, aux_files=[], name_overwrite=None, size=45662, params='', wildcards='sample=sample1', mime='image/png', caption='<p>These are the first random numbers for sample1</p>\n', id='24313a970d0313588f96a9441882390377411f350a74a2efa9ff6aeb21be3902', target='sample1.png')">
 <p>These are the first random numbers for sample1</p>
 
-                        
-                            <img src="results/plots/sample2.png" alt="FileRecord(path=PosixPath('results/plots/sample2.png'), job=plot_data, category=Category(name='2) Data Visualization', is_other=False, id='13981ae944089d54bd8dd3977bfb7bf06ddcb165776bb9af3045814f618a6108'), wildcards_overwrite=None, labels=None, raw_caption=<snakemake.sourcecache.LocalSourceFile object at 0x127f60e90>, aux_files=[], name_overwrite=None, size=46138, params='', wildcards='sample=sample2', mime='image/png', caption='<p>These are the first random numbers for sample2</p>\n', id='0174c7ee292d0d1d764519370593983923d5877d9371c9e1ad0ab0e85a4b87aa', target='sample2.png')">
+<h3>sample2.csv</h3>
+<table>
+<thead>
+<tr>
+<th style="text-align: right;"></th>
+<th style="text-align: right;">x</th>
+<th style="text-align: right;">y</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0.900229</td>
+</tr>
+<tr>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">1.63412</td>
+</tr>
+<tr>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">0.141262</td>
+</tr>
+<tr>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">1.48179</td>
+</tr>
+<tr>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">-1.05023</td>
+</tr>
+<tr>
+<td style="text-align: right;"><a href="results/data/sample2.csv">results/data/sample2.csv</a></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+</tr>
+</tbody>
+</table>
 <p>These are the first random numbers for sample2</p>
 
-                        
-                            <img src="results/plots/sample3.png" alt="FileRecord(path=PosixPath('results/plots/sample3.png'), job=plot_data, category=Category(name='2) Data Visualization', is_other=False, id='13981ae944089d54bd8dd3977bfb7bf06ddcb165776bb9af3045814f618a6108'), wildcards_overwrite=None, labels=None, raw_caption=<snakemake.sourcecache.LocalSourceFile object at 0x127f60e90>, aux_files=[], name_overwrite=None, size=47441, params='', wildcards='sample=sample3', mime='image/png', caption='<p>These are the first random numbers for sample3</p>\n', id='02e3899f18ea15d17d13073344114f5144a3fc125e9f7fdadeac9a83dae8b23e', target='sample3.png')">
+<h3>sample3.csv</h3>
+<table>
+<thead>
+<tr>
+<th style="text-align: right;"></th>
+<th style="text-align: right;">x</th>
+<th style="text-align: right;">y</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0.197764</td>
+</tr>
+<tr>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">0.244541</td>
+</tr>
+<tr>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">-0.525987</td>
+</tr>
+<tr>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">-1.26653</td>
+</tr>
+<tr>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">0.957179</td>
+</tr>
+<tr>
+<td style="text-align: right;"><a href="results/data/sample3.csv">results/data/sample3.csv</a></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+</tr>
+</tbody>
+</table>
 <p>These are the first random numbers for sample3</p>
 
-                        
-                    </ul>
-                </li>
-            
-        </ul>
-    
-        <h2>3) Aggregation</h2>
-        <ul>
-            
-                <li><h3>Other</h3>
-                    <ul>
-                        
-                            <table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>x</th>
-      <th>y</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>0</th>
-      <td>1</td>
-      <td>0.764926</td>
-    </tr>
-    <tr>
-      <th>1</th>
-      <td>2</td>
-      <td>-1.078277</td>
-    </tr>
-    <tr>
-      <th>2</th>
-      <td>3</td>
-      <td>-0.844419</td>
-    </tr>
-    <tr>
-      <th>3</th>
-      <td>4</td>
-      <td>-1.100885</td>
-    </tr>
-    <tr>
-      <th>4</th>
-      <td>5</td>
-      <td>0.394016</td>
-    </tr>
-  </tbody>
+<h2>Data Visualization</h2>
+<p>Here, we visualize the data in a nice way.</p>
+<p><img alt="sample1.png" src="results/plots/sample1.png" /></p>
+<p>This is the lineplot for sample sample1</p>
+
+<p><img alt="sample2.png" src="results/plots/sample2.png" /></p>
+<p>This is the lineplot for sample sample2</p>
+
+<p><img alt="sample3.png" src="results/plots/sample3.png" /></p>
+<p>This is the lineplot for sample sample3</p>
+
+<h2>Aggregation</h2>
+<table>
+<thead>
+<tr>
+<th style="text-align: right;"></th>
+<th style="text-align: right;">x</th>
+<th style="text-align: right;">y</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0.131469</td>
+</tr>
+<tr>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">0.593698</td>
+</tr>
+<tr>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">-0.230604</td>
+</tr>
+<tr>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">-0.473003</td>
+</tr>
+<tr>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">0.0590795</td>
+</tr>
+<tr>
+<td style="text-align: right;"><a href="results/summary.csv">results/summary.csv</a></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+</tr>
+</tbody>
 </table>
-<li><a href="results/summary.csv">results/summary.csv</a></li>
 <p>These are the first random numbers for aggregated samples</p>
 
-                        
-                            <img src="results/summary.png" alt="FileRecord(path=PosixPath('results/summary.png'), job=aggregate_data, category=Category(name='3) Aggregation', is_other=False, id='59a20da430de0c467e42b6837a087037e7019ccccdadd8bd11c5e73f6b2b9098'), wildcards_overwrite=None, labels=None, raw_caption=<snakemake.sourcecache.LocalSourceFile object at 0x127f61af0>, aux_files=[], name_overwrite=None, size=48109, params='', wildcards='', mime='image/png', caption='<p>This is the lineplot for sample aggregated samples</p>\n', id='c3f0b68cac4b86e3f9c312f68240512e6346e62e5fc5421fe45db53afa27c754', target='summary.png')">
+<p><img alt="summary.png" src="results/summary.png" /></p>
 <p>This is the lineplot for sample aggregated samples</p>
-
-                        
-                    </ul>
-                </li>
-            
-        </ul>
-    
-</body>
-</html>

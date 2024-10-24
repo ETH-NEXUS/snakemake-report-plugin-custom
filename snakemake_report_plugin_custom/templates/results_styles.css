@@ -1,0 +1,26 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f0f0f0;
+}
+
+h1, h2, h3 {
+    color: #333;
+}
+
+figure {
+    border: 2px solid #ccc;
+    padding: 10px;
+    margin: 10px;
+    background-color: #fff;
+}
+
+
+.two-figures {
+    display: flex;
+    justify-content: space-around; /* Space between figures */
+}
+
+.two-figures figure {
+    width: 45%; /* Adjust as needed */
+    margin: 10px; /* Space around figures */
+}

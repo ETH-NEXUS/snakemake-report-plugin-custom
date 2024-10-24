@@ -12,6 +12,7 @@ except ImportError:
 
 from .resources_report import render_resource_html
 from .results_report import render_results_html
+from ._utils import print_content, get_vars
 
 # from snakemake import logger
 from snakemake_interface_common.exceptions import WorkflowError  # noqa: F401
@@ -30,6 +31,14 @@ from pathlib import Path
 
 @dataclass
 class ReportSettings(ReportSettingsBase):
+    config: Optional[Path] = field(
+        default=None,
+        metadata={
+            "help": "Path to the results config yaml",
+            "env_var": False,
+            "required": False,
+        },
+    )
     results: Optional[Path] = field(
         default=None,
         metadata={
@@ -60,13 +69,33 @@ class Reporter(ReporterBase):
         # In particular, the settings of above ReportSettings class are accessible via
         # self.settings.
         self.template_dir = path.join(path.dirname(__file__), "templates")
-        self.results_template_file = "results_template.html.jinja2"
+        self.results_template_files = {what :f"results_{what}.md" for what in ("main", "section", "subsection")} # default template files
         self.resource_template_file = "resources_template.html.jinja2"
+        if self.settings.config is not None:
+            try:
+                with open(self.settings.config, 'r') as config_file:
+                    self.settings.config = yaml.safe_load(config_file)
+            except FileNotFoundError:
+                logger.error(f"specified config file {config_file} not found")
+            if self.settings.config is None:
+                self.settings.config={}
+            if "results" in self.settings.config and self.settings.results is None:
+                self.settings.results=Path(self.settings.config["results"].get("path"))
+                if self.settings.results is None:
+                    logger.warning("reporting config section 'results' found, but no path specified - no results report is generated")
+            if "resources" in self.settings.config and self.settings.resources is None:
+                self.settings.results=Path(self.settings.config["resources"].get("path"))
+                if self.settings.resources is None:
+                    logger.warning("reporting config section 'resources' found, but no path specified - no resources report is generated")
+
 
         if self.settings.results is None and self.settings.resources is None:
             raise WorkflowError(
-                "either specify --report-custom-results or --report-custom-resources"
+                "either specify results or resources report paths in config or with --report-custom-results or --report-custom-resources parameters"
             )
+        
+        # to get an Idea of what is there:
+        print_content(**get_vars(self))
 
 
 
@@ -102,5 +131,5 @@ class Reporter(ReporterBase):
         # Convert JSON string to dictionary
         config_dict=yaml.safe_load(self.configfiles[0].source)
 
-        render_results_html(self.results,self.workflow_description,config_dict, output_dir, self.template_dir, self.results_template_file, embedded=False)
+        render_results_html(self.results,self.workflow_description,config_dict,self.settings.config.get("results",{}), output_dir, self.template_dir, self.results_template_files, embedded=False)
         logger.info(f"Result Report generated at {output_dir}")
