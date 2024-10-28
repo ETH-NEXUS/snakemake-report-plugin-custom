@@ -6,6 +6,7 @@ import shutil
 import pandas as pd
 import yaml
 import markdown
+from markdown.extensions.attr_list import AttrListExtension
 import snakemake
 
 try:
@@ -14,26 +15,50 @@ except ImportError:
     from snakemake import logger
 
 from snakemake.report import FileRecord
-# TODO: how to control the order of entries?
-# TODO: add additional text for categories and subcategories
+
 
 # monkey patching of the snakemake FileRecord class that gets passed to respective templates as variables
+HTTP_IMAGE_SETTINGS=("width", "height", "style", "align")
+MD_TABLE_SETTINGS = [
+    "index",     # Whether to show the DataFrame index (True/False)
+    "headers",       # Specify headers; can be "keys" or a list of column names
+    "floatfmt",      # Format for floating-point numbers, e.g., ".2f"
+    "numalign",      # Alignment for numeric columns ("left", "center", "right")
+    "stralign",      # Alignment for string columns ("left", "center", "right")
+    "missingval",    # Placeholder for missing values (default is "")
+    "colalign"       # Alignment for individual columns, given as a tuple/list of alignments
+]
 
-def render_file_record(self):
-    # render as markdown
+def _render_file_record_default(self):
+    return self.show()
+    
+def _render_file_record(self, **params):
+    # render as markdown    
     rendered=[] 
-    logger.debug(f"render {self.path} as {self.render_settings.get("type", "unknown")}")
-    if self.render_settings.get("type") == "image":
-        # html
-        # rendered.append(f'<img src="{ file.path }" alt="{ file }">') 
-        # md
-        rendered.append(f'![{self.path.name}]({self.path})')
-    elif self.render_settings.get("type") == "table":
-        sep=self.render_settings.get("sep",{}).get("suffix",',')
-        df=pd.read_table(self.path, sep=sep)
-        rendered.append(df.head().to_markdown()) # or to_html()
+    render_type=self.render_settings.get("type", "unknown")
+    params={**self.render_settings,**params}
+    logger.debug(f"render {self.path} as {render_type} with settings {params}")
+    if not self.render_settings.get("hide", False):
+        if self.render_settings.get("type") == "image":
+            params.setdefault('alt',self.path.name)
+            if any( p in params for p in HTTP_IMAGE_SETTINGS ):        
+                settings_list=[f' alt="{ params["alt"] }"'] + \
+                    [f' {k}="{ params[k] }"' for k in HTTP_IMAGE_SETTINGS if k in params]
+                rendered.append(f'<img src="{ self.path }"{"".join(settings_list)}>') 
+            else:
+                rendered.append(f'![{params["alt"]}]({self.path})')
+        elif self.render_settings.get("type") == "table":        
+            sep=self.render_settings.get("sep")
+            df=pd.read_table(self.path, sep=sep)
+            if "max_row" in params:
+                df=df.head(params["max_row"])
+            if "col_select" in params:
+                try:
+                    df=df.iloc[:,params["col_select"]]
+                except IndexError as e:
+                    logger.error(f'ignoring col_select="{params["col_select"]}" for {self.path.name}: {e}')
+            rendered.append(df.to_markdown(**{k:v for k,v in params.items() if k in MD_TABLE_SETTINGS})) # or to_html()
     if self.render_settings.get("show_link", True):
-        logger.debug(f"render  {self.path} as link")
         #rendered.append(f'<li><a href="{ file.path }">{ file.path }</a></li>')
         rendered.append(f'[{self.path}]({self.path})')
     if self.caption and self.render_settings.get("show_caption", True):
@@ -41,20 +66,50 @@ def render_file_record(self):
     return("\n".join(rendered))
     
 
-def set_render_settings(self, params):
+def set_default_render_settings(self, suffix_params):
+    # overwrite the class attribute with instance specific defaults
     suffix=self.path.suffix[1:]
-    if suffix in params.get("table", {}).get("suffix", ('csv', "tsv")):
-        p={"type":"table", **self.default_render_params["table"], **params.get("table", {})}
-    elif suffix in params.get('image', {}).get("suffix", ("png", "jpg")):
-        p={"type":"image",**self.default_render_params["image"], **params.get("image", {})}
+    if suffix in suffix_params.get("table", ('csv', "tsv")):
+        p={"type":"table", **self.default_render_settings["table"]}
+        p["sep"]=p["sep"].get(suffix,",")
+    elif suffix in suffix_params.get('image',("png", "jpg")):
+        p={"type":"image", **self.default_render_settings["image"]}
     else:
-        p={**self.default_render_params["other"], **params.get("other", {})}
+        p={"type":"other", **self.default_render_settings["other"]}
     self.render_settings=p
     
 
-FileRecord.default_render_params={"table":{"sep":{"cnv":",","tsv":"\t"},"show_link": True}, "image":{"width":None, "height":None, "show_link": False}, "other":{"show_link":True}}
-FileRecord.__str__=render_file_record
+def set_render_settings(self, params, presets):
+    # overwrite general settings with specific settings    
+    # logger.debug(f"setting rendering options for {self.path.name}: {self.render_settings} <- {params}")
+    render_type=self.render_settings["type"]
+    params=params.get(render_type, {})
+    if not params:
+        params={ **presets.get(render_type, {}).get("default", {}), **self.render_settings}
+        logger.debug(f"using default preset for {render_type}: {params}")
+    elif isinstance(params, str):
+        try:
+            params=presets[render_type][params]
+        except KeyError:
+            logger.error(f'no preset "{params}" for files of type "{render_type}"')
+            params={}
+    # logger.debug(f"setting rendering options for {self.path.name}: {self.render_settings} <- {params}")
+    p={**self.render_settings, **params}
+    if render_type=="table":
+        if isinstance(p["sep"], dict):
+            suffix=self.path.suffix[1:]
+            p["sep"]=p["sep"].get(suffix,",")
+    logger.debug(f"rendering options for {self.path.name}: {p}")
+    self.render_settings=p
+    
+# redering function
+FileRecord.show=_render_file_record
+FileRecord.__str__=_render_file_record_default
+# default render settings
+FileRecord.default_render_settings={"table":{"sep":{"cnv":",","tsv":"\t"},"show_link": True}, "image":{"show_link": False}, "other":{"show_link":True}}
+# overwrite general settings with specific settings
 FileRecord.set_render_settings = set_render_settings
+FileRecord.set_default_render_settings = set_default_render_settings
 
 
 def render_results_html(results,workflow_description, snakemake_config, report_config, output_dir, template_dir, template_file, embedded=False):
@@ -83,7 +138,6 @@ def render_results_html(results,workflow_description, snakemake_config, report_c
 
     # load user defined section order
     toc=report_config.get("result_sections", {})
-    
     if toc:
         logger.debug("Found user defined section order and settings")    
         logger.debug(toc)
@@ -96,21 +150,42 @@ def render_results_html(results,workflow_description, snakemake_config, report_c
                     subsections[subsec]={}
     default_section_template=env.get_template(template_file["section"])
     default_subsection_template=env.get_template(template_file["subsection"])
-
     category_order={cat:i+1 for i,cat in enumerate(toc)}
     category_order["Other"]=0
+    # load user defined rendering options and presets
+    default_settings_config=report_config.get("render_options")
+    render_presets={}
+    default_suffix_params={render_type:params.get("suffix", []) for render_type,params in default_settings_config.items()}
+    for render_type in default_settings_config:
+        presets=default_settings_config[render_type].pop("presets",{})
+        render_presets.setdefault(render_type, {})
+        render_presets[render_type]["default"]=default_settings_config[render_type]
+        for ps_name, ps_vals in presets.items():
+            render_presets[render_type][ps_name]={**default_settings_config[render_type], **ps_vals}
+        
+    for k,v in default_settings_config.items():
+        logger.debug(f"default settings for {k}: {v}")
+
+    for k,v in render_presets.items():
+        for ps_k, ps_v in v.items():
+            logger.debug(f"preset settings for {k} {ps_k}: {ps_v}")
+
 
     for category, subcat_dict in results.items():     
         category.sort_key=category_order.get(category.name, len(category_order) + 1)
-        cat_settings=toc.get(category.name, {})
+        cat_settings={k:v for k,v in toc.get(category.name, {}).items() if k != 'subsections'}
+        cat_suffix_params={render_type:params.get("suffix", []) for render_type,params in cat_settings.items() if isinstance(params, dict)}
         subcategory_order={cat:i+1 for i,cat in enumerate(cat_settings.get("subsections", {}))}
         subcategory_order["Other"]=0
-
         for subcat, result_list in subcat_dict.items():            
-            subcat_settings=cat_settings.get("subsections", {}).get(subcat.name, {})
+            subcat_settings=toc.get(category.name).get("subsections", {}).get(subcat.name, {})
             subcat.sort_key=subcategory_order.get(subcat.name, len(subcategory_order) + 1)
+            subcat_suffix_params={render_type:params.get("suffix", []) for render_type,params in subcat_settings.items() if isinstance(params, dict)}
+            suffix_params={**default_suffix_params, **cat_suffix_params, **subcat_suffix_params}
             for file in result_list:        
-                file.set_render_settings(report_config)
+                file.set_default_render_settings(suffix_params) # set default settings
+                file.set_render_settings(cat_settings, render_presets) # set category settings
+                file.set_render_settings(subcat_settings, render_presets) # set subcategory settings
                 logger.debug(f'{file.path.name}: {file.render_settings}')            
             try:
                 subsection_template=load_template(env, subcat_settings["template"])

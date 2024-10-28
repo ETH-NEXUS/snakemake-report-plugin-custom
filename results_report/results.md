@@ -1,6 +1,6 @@
 # Report for Basic Snakemake Workflow
 
-Report generated on: 2024-10-24 18:45:00
+Report generated on: 2024-10-28 15:49:18
 ## Workflow Description
 ### Overview
 
@@ -42,37 +42,37 @@ This is some custom introduction text for the data generation section.
 
 
 ### sample1.csv
-|    |   x |          y |
-|---:|----:|-----------:|
-|  0 |   1 | -0.703586  |
-|  1 |   2 | -0.0975687 |
-|  2 |   3 | -0.307086  |
-|  3 |   4 | -1.63426   |
-|  4 |   5 |  0.27029   |
+|   index |   value |
+|--------:|--------:|
+|     1.0 |    -0.7 |
+|     2.0 |    -0.1 |
+|     3.0 |    -0.3 |
+|     4.0 |    -1.6 |
+|     5.0 |     0.3 |
 [results/data/sample1.csv](results/data/sample1.csv)
 <p>These are the first random numbers for sample1</p>
 
 
 ### sample2.csv
-|    |   x |         y |
-|---:|----:|----------:|
-|  0 |   1 |  0.900229 |
-|  1 |   2 |  1.63412  |
-|  2 |   3 |  0.141262 |
-|  3 |   4 |  1.48179  |
-|  4 |   5 | -1.05023  |
+|   index |   value |
+|--------:|--------:|
+|     1.0 |     0.9 |
+|     2.0 |     1.6 |
+|     3.0 |     0.1 |
+|     4.0 |     1.5 |
+|     5.0 |    -1.1 |
 [results/data/sample2.csv](results/data/sample2.csv)
 <p>These are the first random numbers for sample2</p>
 
 
 ### sample3.csv
-|    |   x |         y |
-|---:|----:|----------:|
-|  0 |   1 |  0.197764 |
-|  1 |   2 |  0.244541 |
-|  2 |   3 | -0.525987 |
-|  3 |   4 | -1.26653  |
-|  4 |   5 |  0.957179 |
+|   index |   value |
+|--------:|--------:|
+|     1.0 |     0.2 |
+|     2.0 |     0.2 |
+|     3.0 |    -0.5 |
+|     4.0 |    -1.3 |
+|     5.0 |     1.0 |
 [results/data/sample3.csv](results/data/sample3.csv)
 <p>These are the first random numbers for sample3</p>
 
@@ -87,15 +87,15 @@ Here, we visualize the data in a nice way.
 
 
 
-![sample1.png](results/plots/sample1.png)
+<img src="results/plots/sample1.png" alt="sample1.png" width="1024">
 <p>This is the lineplot for sample sample1</p>
 
 
-![sample2.png](results/plots/sample2.png)
+<img src="results/plots/sample2.png" alt="sample2.png" width="1024">
 <p>This is the lineplot for sample sample2</p>
 
 
-![sample3.png](results/plots/sample3.png)
+<img src="results/plots/sample3.png" alt="sample3.png" width="1024">
 <p>This is the lineplot for sample sample3</p>
 
 
@@ -108,18 +108,23 @@ Here, we visualize the data in a nice way.
 
 
 
-|    |   x |          y |
-|---:|----:|-----------:|
-|  0 |   1 |  0.131469  |
-|  1 |   2 |  0.593698  |
-|  2 |   3 | -0.230604  |
-|  3 |   4 | -0.473003  |
-|  4 |   5 |  0.0590795 |
+|    x |    y |
+|-----:|-----:|
+|  1.0 |  0.1 |
+|  2.0 |  0.6 |
+|  3.0 | -0.2 |
+|  4.0 | -0.5 |
+|  5.0 |  0.1 |
+|  6.0 |  0.4 |
+|  7.0 | -0.2 |
+|  8.0 | -0.8 |
+|  9.0 |  0.5 |
+| 10.0 | -0.5 |
 [results/summary.csv](results/summary.csv)
 <p>These are the first random numbers for aggregated samples</p>
 
 
-![summary.png](results/summary.png)
+<img src="results/summary.png" alt="summary.png" width="512">
 <p>This is the lineplot for sample aggregated samples</p>
 
 
