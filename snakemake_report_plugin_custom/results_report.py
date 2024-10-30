@@ -6,9 +6,9 @@ import shutil
 import pandas as pd
 import yaml
 import markdown
-from markdown.extensions.attr_list import AttrListExtension
+# from markdown.extensions.attr_list import AttrListExtension
 import snakemake
-
+from ._utils import print_content
 try:
     from snakemake.logging import logger
 except ImportError:
@@ -30,6 +30,15 @@ MD_TABLE_SETTINGS = [
 ]
 
 def _render_file_record_default(self):
+    # this is for FileRecord.__str__()
+    if not hasattr(self, 'render_settings'):
+        def short(x):
+            if len(x)>12:
+                return x[:10]+'...'
+            return x        
+        attribute_list = [f'{attr}={short(str(getattr(self, attr)))}' for attr in  self.__dataclass_fields__ if not attr.startswith('_')]
+        return f"{self.__class__.__name__}({', '.join(attribute_list)})"
+
     return self.show()
     
 def _render_file_record(self, **params):
@@ -110,8 +119,31 @@ FileRecord.default_render_settings={"table":{"sep":{"cnv":",","tsv":"\t"},"show_
 # overwrite general settings with specific settings
 FileRecord.set_render_settings = set_render_settings
 FileRecord.set_default_render_settings = set_default_render_settings
+class DummyCategory:
+    def __init__(self, name):
+        self.name=name
 
 
+def remove_category(results, cat_name, subcat_name=None):
+    # remove category/subcategory from results
+    subcat = None
+    for cat, subcat_dict in results.items():
+        if cat.name == cat_name:
+            if subcat_name is None:
+                break
+            for subcat in subcat_dict:
+                if subcat.name == subcat_name:
+                    break
+            else:
+                return
+        else:
+            return
+    if subcat is None:
+        results.pop(cat)
+    else:
+        results[cat].pop(subcat)
+        
+            
 def render_results_html(results,workflow_description, snakemake_config, report_config, output_dir, template_dir, template_file, embedded=False):
     try:
         output_dir.mkdir(parents=True, exist_ok=False)
@@ -128,12 +160,12 @@ def render_results_html(results,workflow_description, snakemake_config, report_c
 
     # Prepare data for the report
     now = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-    result_file_list = copy_result_files(results, output_dir)
+    class Snakemake:
+        config=snakemake_config
+
     description_file=report_config.get("description")
     if description_file:
-        logger.debug(f"Custom workflow description from {description_file}")
-        class Snakemake:
-            config=snakemake_config
+        logger.debug(f"Custom workflow description from {description_file}")        
         workflow_description=render_template(env, description_file, snakemake=Snakemake, categories=results, files={})
 
     # load user defined section order
@@ -144,10 +176,21 @@ def render_results_html(results,workflow_description, snakemake_config, report_c
         for section in toc:
             if toc[section] is None:
                 toc[section]={}
+            if toc[section].get("skip", False):
+                #results.pop(DummyCategory(section), None) # remove results of skipped section
+                remove_category(results, section)
+                logger.info(f"skipping category {section}")
+                continue
             subsections=toc[section].get("subsections", {})
             for subsec in subsections:
                 if subsections[subsec] is None:
                     subsections[subsec]={}
+                if subsections[subsec].get("skip", False):
+                    #results.get(DummyCategory(section),{}).pop(DummyCategory(subsec), None) # remove results of skipped subsection
+                    remove_category(results, section, subsec)
+                    logger.info(f"skipping subcategory {section}->{subsec}")
+                
+    print_content(results=results)
     default_section_template=env.get_template(template_file["section"])
     default_subsection_template=env.get_template(template_file["subsection"])
     category_order={cat:i+1 for i,cat in enumerate(toc)}
@@ -171,17 +214,20 @@ def render_results_html(results,workflow_description, snakemake_config, report_c
             logger.debug(f"preset settings for {k} {ps_k}: {ps_v}")
 
 
-    for category, subcat_dict in results.items():     
+    for category, subcat_dict in results.items(): 
         category.sort_key=category_order.get(category.name, len(category_order) + 1)
         cat_settings={k:v for k,v in toc.get(category.name, {}).items() if k != 'subsections'}
         cat_suffix_params={render_type:params.get("suffix", []) for render_type,params in cat_settings.items() if isinstance(params, dict)}
         subcategory_order={cat:i+1 for i,cat in enumerate(cat_settings.get("subsections", {}))}
         subcategory_order["Other"]=0
         for subcat, result_list in subcat_dict.items():            
-            subcat_settings=toc.get(category.name).get("subsections", {}).get(subcat.name, {})
+            subcat_settings=toc.get(category.name, {}).get("subsections", {}).get(subcat.name, {})
             subcat.sort_key=subcategory_order.get(subcat.name, len(subcategory_order) + 1)
             subcat_suffix_params={render_type:params.get("suffix", []) for render_type,params in subcat_settings.items() if isinstance(params, dict)}
             suffix_params={**default_suffix_params, **cat_suffix_params, **subcat_suffix_params}
+            logger.info(result_list[0])
+            logger.debug(f"preset settings for {category.name} {subcat.name}: {ps_v}")
+            
             for file in result_list:        
                 file.set_default_render_settings(suffix_params) # set default settings
                 file.set_render_settings(cat_settings, render_presets) # set category settings
@@ -191,13 +237,14 @@ def render_results_html(results,workflow_description, snakemake_config, report_c
                 subsection_template=load_template(env, subcat_settings["template"])
             except (KeyError, FileNotFoundError):
                 subsection_template=default_subsection_template
-            subcat.rendered=subsection_template.render(subcategory=subcat, files=result_list)
+            subcat.rendered=subsection_template.render(subcategory=subcat, files=result_list, snakemake=Snakemake)
         try:
             section_template=load_template(env, cat_settings["template"])
         except (KeyError, FileNotFoundError):
             section_template=default_section_template
-        category.rendered=section_template.render(category=category, subcategories=dict(sorted(subcat_dict.items(), key=lambda x:(x[0].sort_key, x[0].name))), has_other=any(subcat.is_other for subcat in subcat_dict.keys()))
+        category.rendered=section_template.render(category=category, subcategories=dict(sorted(subcat_dict.items(), key=lambda x:(x[0].sort_key, x[0].name))), has_other=any(subcat.is_other for subcat in subcat_dict.keys()), snakemake=Snakemake)
     
+    result_file_list = copy_result_files(results, output_dir)
     
     # Render the report content
     report_content = template.render(

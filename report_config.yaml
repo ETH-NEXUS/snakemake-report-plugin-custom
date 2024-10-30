@@ -7,7 +7,10 @@ results:
   description: report_template/workflow_overview.md 
   # here you can explicitly define the order of sections, and additional templates
   result_sections:
+    "sample1":
+      skip: True
     "Data Generation": 
+      skip: True # this section will be skipped (with all result files in it)
       template: report_template/data_generation.md
       table: my_specific_table
       subsections:
@@ -50,7 +53,6 @@ results:
       index: False 
       numalign: "right"
       stralign: "center"
-      floatfmt: ".1f"
       missingval: "N/A"
       link: False
       presets:
@@ -58,6 +60,8 @@ results:
           max_row: 100
         my_specific_table: 
           max_row: 5
-          col_select: [1,3,4] # select a subset of columns
+          col_select: [0,1] # select a subset of columns
           headers: ["index", "value"] # overwrite column headers
+          floatfmt: ".1f"
+
       
