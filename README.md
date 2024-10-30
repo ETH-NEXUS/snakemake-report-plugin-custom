@@ -122,29 +122,79 @@ captions get rendered with:
 * snakemake.scripts.Snakemake()
     * input, output, params, wildcards, threads, resources, log, config, rulename, bench_iteration
 * categories
-* files
+* files (list with all result files)
 
 
-reports.yaml file
+report_config.yaml file
 ```yaml
-structure:
-  intro:
-    content: "report/workflow.md"
-    vars: results/report_vars.yaml
-  category1:
-    content: "report/category1.md"
-    subcat: 
-        subcat1.1:
-          content: "report/subcat1.1.md"
-        subcat1.2:
-          content: "report/subcat1.2.md"
-        other: 
-          show: False
-    other: 
-      show: True
-  category2:
-    show: False
 
+results:
+  title: "Report for Basic Snakemake Workflow"
+  path: results_report/
+  # create self contained file (TODO)
+  embedded: False
+  # if description template is not specified, the template from the snakefile (report directive) is used 
+  description: report_template/workflow_overview.md 
+  # here you can explicitly define the order of sections, and additional templates
+  result_sections:
+    "sample1":
+      skip: True
+    "Data Generation": 
+      skip: True # this section will be skipped (with all result files in it)
+      template: report_template/data_generation.md
+      table: my_specific_table
+      subsections:
+        Other:
+          template: report_template/data_generation_subsection.md
+    "Data Visualization":
+      template: report_template/data_visualization.md
+      image: large
+    Aggregation: 
+      # default rendering 
+      # - header, no text, all result files are concatenated 
+    # Categories not listed here are added with default 
+    # rendering in alphabetical order
+    # to skip a category add:
+    # Category_name: skip
+    # "[...]": 
+    #   template: default
+    # References:
+    #  template: report_template/references
+
+  # specify default rendering options for    
+  render_options: 
+    image:
+      suffix:
+        - "jpg"
+        - "png"
+      width: 512
+      link: False
+      presets:
+        large:
+          width: 1024
+    table:
+      suffix:
+        - "csv"
+        - "tsv"
+      sep:
+        default: "\t"
+        csv: ","
+      max_row: 10 # fist n rows only
+      index: False 
+      numalign: "right"
+      stralign: "center"
+      missingval: "N/A"
+      link: False
+      presets:
+        show_100:
+          max_row: 100
+        my_specific_table: 
+          max_row: 5
+          col_select: [0,1] # select a subset of columns
+          headers: ["index", "value"] # overwrite column headers
+          floatfmt: ".1f"
+resources:
+  path: resource_report.html
 
 ```
 category.md templates

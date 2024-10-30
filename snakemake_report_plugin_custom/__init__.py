@@ -84,7 +84,7 @@ class Reporter(ReporterBase):
                 if self.settings.results is None:
                     logger.warning("reporting config section 'results' found, but no path specified - no results report is generated")
             if "resources" in self.settings.config and self.settings.resources is None:
-                self.settings.results=Path(self.settings.config["resources"].get("path"))
+                self.settings.resources=Path(self.settings.config["resources"].get("path"))
                 if self.settings.resources is None:
                     logger.warning("reporting config section 'resources' found, but no path specified - no resources report is generated")
 

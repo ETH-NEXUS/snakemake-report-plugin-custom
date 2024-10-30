@@ -65,3 +65,5 @@ results:
           floatfmt: ".1f"
 
       
+resources:
+  path: resource_report.html
