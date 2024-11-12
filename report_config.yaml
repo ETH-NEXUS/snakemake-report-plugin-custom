@@ -10,7 +10,7 @@ results:
     "sample1":
       skip: True
     "Data Generation": 
-      skip: True # this section will be skipped (with all result files in it)
+      #skip: True # this section will be skipped (with all result files in it)
       template: report_template/data_generation.md
       table: my_specific_table
       subsections:

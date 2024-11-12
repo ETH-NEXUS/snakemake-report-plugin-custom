@@ -58,6 +58,7 @@ poetry run flake8
 poetry run coverage run -m pytest tests/tests.py
 poetry run coverage report -m
 ```
+
 ### release please
 Releases are automated with release please, which gets triggered with specially formated commit messages.
 For all features, see the githhub readme: https://github.com/googleapis/release-please
@@ -92,7 +93,6 @@ rm -r results_report  && poetry run snakemake -s ../basic_snakemake_workflow/Sna
 
 
 ## TODO:
-* test installation without poetry (github, PyPI)
 * poetry deployment?
 * satisfy github action tests
 * add functionality to make it useful:

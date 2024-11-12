@@ -2,17 +2,47 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>Simple Report</title>
+    <title>Results Report</title>
     <style>
-        body { font-family: Arial, sans-serif; }
-        h1 { color: #333; }
-        h2 { color: #555; }
-        ul { list-style-type: none; padding: 0; }
-        li { margin-bottom: 10px; }
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+        }
+        h1, h2, h3 {
+            color: #333;
+        }
+        figure {
+            border: 2px solid #ccc;
+            padding: 10px;
+            margin: 10px;
+            background-color: #fff;
+        }
+        .borderless td, .borderless th {
+            border: none; /* Remove borders */
+        }
+        .borderless {
+            width: 100%;
+        }
+        .sidebar {
+            position: fixed; /* Fix it to the left */
+            left: 0;
+            top: 100px; /* Adjust based on your header */
+            width: 200px; /* Set a width */
+            height: calc(100% - 100px); /* Full height minus header */
+            overflow-y: auto; /* Enable scrolling if content overflows */
+            background-color: #f9f9f9; /* Background color */
+            padding: 15px; /* Padding inside the sidebar */
+            border-right: 1px solid #ccc; /* Optional border */
+        }
+
+        /* Ensure the main content doesn't overlap */
+        .document {
+            margin-left: 220px; /* Adjust based on sidebar width */
+        }
     </style>
 </head>
 <body>
-    <h1>Simple Report</h1>
+    <h1>Results Report</h1>
     <p>Report generated on: {{ now }}</p>
     <p>Workflow Description: {{ workflow_description }}</p>
     {% for category, subcategories in results.items() %}

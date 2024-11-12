@@ -1,8 +1,8 @@
-
 try:
     from snakemake.logging import logger
 except ImportError:
     from snakemake import logger
+
 
 def get_vars(obj):
     if hasattr(obj, "__dict__"):
@@ -17,10 +17,10 @@ def print_content(**kwargs):
     logger.info("\n- ".join(kwargs.keys()))
     if "configfiles" in kwargs:
         logger.info("\n--- CONFIGFILES ---")
-        logger.info(kwargs['configfiles'])
+        logger.info(kwargs["configfiles"])
 
     if "dag" in kwargs:
-        dag=kwargs["dag"]
+        dag = kwargs["dag"]
         logger.info("\n--- DAG ---")
         logger.info(dag)
         for k, v in vars(dag).items():
@@ -54,7 +54,7 @@ def print_content(**kwargs):
 
     if "rule" in kwargs:
         logger.info("\n--- RULES ---")
-        rules=kwargs["rules"]
+        rules = kwargs["rules"]
         for rule_name, rule_record in rules.items():
             logger.info(f"Rule: {rule_name}")
             # Convert rule record to dictionary if possible
@@ -63,7 +63,7 @@ def print_content(**kwargs):
             logger.info(rule)
 
     # explore what we have:
-    for k,value in kwargs.items():
+    for k, value in kwargs.items():
         if k in ["rule", "jobs", "results", "dag", "configfiles"]:
             continue
         logger.info(f"\n--- {k.upper()} ---")
